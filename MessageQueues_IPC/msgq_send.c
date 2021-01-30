@@ -8,7 +8,7 @@
 #include <sys/ipc.h>
 #include <sys/msg.h>
 
-#define PERMISSION 0644
+#define PERMISSION 0777
 
 struct msg_buf
 {
@@ -30,6 +30,7 @@ if((key=ftok("msgq.txt",'B'))==-1){
 	perror("File to key: ftok()\n");
 	exit(1);
 }
+printf("key= %d\n",key);
 
 if((msgqid=msgget(key,PERMISSION | IPC_CREAT))==-1){
 	perror("Error getting id for msg queue: mssget()\n");
@@ -38,6 +39,7 @@ if((msgqid=msgget(key,PERMISSION | IPC_CREAT))==-1){
 
 printf("Message queue has been set\n");
 printf("Enter the line that you want to send\n");
+buf.mtype = 1; 
 
 /**fgets():**/
 /*The C library function char *fgets(char *str, int n, FILE *stream) reads a line from the specified 
@@ -61,9 +63,12 @@ while(fgets(buf.mtext, sizeof(buf.mtext), stdin) != NULL)
 		perror("msgsnd(): Message sending failed");
 	}
 }
+
 	printf("User pressed ctrl+D\n");
-	strcpy(	buf.mtext, "end");
+	strcpy(buf.mtext, "end");
 	len = strlen(buf.mtext);
+
+	//Sending messages
 	if(msgsnd(msgqid, &buf, len+1, 0)==-1)
 	{
 		perror("msgsnd(): Message sending failed");

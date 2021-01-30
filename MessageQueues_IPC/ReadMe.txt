@@ -18,4 +18,10 @@ Queue - Used for IPC(Inter process communication)
 		msgctl(): It performs various operations on a queue. Generally it is use to destroy message queue.
 
 
+		message sending function :
+			Press Ctrl+D to end
+
+		message receiving function:
+			Send "end" from message send function. Then the receiving process closes
+
 **Further information : https://www.tutorialspoint.com/inter_process_communication/inter_process_communication_message_queues.htm**
